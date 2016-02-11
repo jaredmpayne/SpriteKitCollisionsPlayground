@@ -17,6 +17,7 @@ class Scene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMoveToView(view: SKView) {
+        self.size = CGSize(width: 1920, height: 1080)
         
 //: 3. Set the scene's physics world's contact delegate to be the scene class.
         
@@ -86,8 +87,10 @@ class Scene: SKScene, SKPhysicsContactDelegate {
     }
 }
 
-// Show the scene in the playground assistant editor.
-let view = SKView(frame: NSRect(x: 0, y: 0, width: 1920, height: 1080))
-view.presentScene(Scene(size: view.frame.size))
-XCPShowView("Sprite Kit Collisions Demo", view: view)
 
+let scene = Scene()
+scene.scaleMode = .AspectFit
+
+let view = SKView(frame: NSRect(x: 0, y: 0, width: 1920, height: 1080))
+view.presentScene(scene)
+XCPlaygroundPage.currentPage.liveView = view
