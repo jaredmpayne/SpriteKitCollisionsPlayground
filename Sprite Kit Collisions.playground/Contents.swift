@@ -2,7 +2,7 @@
 //: This playground demonstrates how do physics perform collision detection using Swift and Sprite Kit.
 
 import SpriteKit
-import XCPlayground
+import PlaygroundSupport
 
 //: 1. Set your scene class to inherit from both `SKScene` and `SKPhysicsContactDelegate`.
 
@@ -16,7 +16,7 @@ class Scene: SKScene, SKPhysicsContactDelegate {
         // The next would be `static let ObjectName: UInt32 = 0b1 << 2` and so on.
     }
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         self.size = CGSize(width: 1920, height: 1080)
         
 //: 3. Set the scene's physics world's contact delegate to be the scene class.
@@ -27,7 +27,7 @@ class Scene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         
         // Create an invisible barrier around the scene to keep the ball inside.
-        let sceneBound = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        let sceneBound = SKPhysicsBody(edgeLoopFrom: self.frame)
         sceneBound.friction = 0
         sceneBound.restitution = 1
         self.physicsBody = sceneBound
@@ -35,8 +35,8 @@ class Scene: SKScene, SKPhysicsContactDelegate {
 //: 4. Set the `physicsBody.categoryBitMask` property for each object, and the `physicsBody.contactTestBitMask` property for the object you want to be `bodyA` in collision tests.
         
         // Create a ball to bounce around the scene.
-        let ball = SKSpriteNode(color: SKColor.whiteColor(), size: CGSize(width: 50, height: 50))
-        ball.physicsBody = SKPhysicsBody(rectangleOfSize: ball.size)
+        let ball = SKSpriteNode(color: SKColor.white, size: CGSize(width: 50, height: 50))
+        ball.physicsBody = SKPhysicsBody(rectangleOf: ball.size)
         ball.physicsBody!.allowsRotation = false
         ball.physicsBody!.categoryBitMask = CategoryBitMask.Ball
         ball.physicsBody!.contactTestBitMask = CategoryBitMask.Block
@@ -48,11 +48,11 @@ class Scene: SKScene, SKPhysicsContactDelegate {
         self.addChild(ball)
         
         // Create a template for a block.
-        let block = SKSpriteNode(color: SKColor.whiteColor(), size: CGSize(width: 150, height: 50))
+        let block = SKSpriteNode(color: SKColor.white, size: CGSize(width: 150, height: 50))
         block.name = "Block"
-        block.physicsBody = SKPhysicsBody(rectangleOfSize: block.size)
+        block.physicsBody = SKPhysicsBody(rectangleOf: block.size)
         block.physicsBody!.categoryBitMask = CategoryBitMask.Block
-        block.physicsBody!.dynamic = false
+        block.physicsBody!.isDynamic = false
         block.physicsBody!.friction = 0
         block.physicsBody!.restitution = 1
         
@@ -65,20 +65,20 @@ class Scene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-    
+
 //: 5. Add the `- didBeginContact:` function to the class and create `if` blocks to perform actions for specific collision pairs.
     
-    func didBeginContact(contact: SKPhysicsContact) {
+    func didBegin(_ contact: SKPhysicsContact) {
         // Executed if the ball makes contact with the block.
         if contact.bodyA.categoryBitMask == CategoryBitMask.Ball && contact.bodyB.categoryBitMask == CategoryBitMask.Block {
             let block = contact.bodyB.node as! SKSpriteNode
             
             // Turn the block gray if it hasn't been hit yet.
             if block.name == "Block" {
-                block.color = SKColor.darkGrayColor()
+                block.color = SKColor.darkGray
                 block.name = "HalfBlock"
             }
-                
+
             // Remove the block from the scene if it has already been hit.
             else {
                 block.removeFromParent()
@@ -89,8 +89,8 @@ class Scene: SKScene, SKPhysicsContactDelegate {
 
 
 let scene = Scene()
-scene.scaleMode = .AspectFit
+scene.scaleMode = .aspectFit
 
 let view = SKView(frame: NSRect(x: 0, y: 0, width: 1920, height: 1080))
 view.presentScene(scene)
-XCPlaygroundPage.currentPage.liveView = view
+PlaygroundPage.current.liveView = view
