@@ -91,6 +91,6 @@ class Scene: SKScene, SKPhysicsContactDelegate {
 let scene = Scene()
 scene.scaleMode = .aspectFit
 
-let view = SKView(frame: NSRect(x: 0, y: 0, width: 1920, height: 1080))
+let view = SKView(frame: NSRect(x: 0, y: 0, width: 640, height: 360))
 view.presentScene(scene)
 PlaygroundPage.current.liveView = view
